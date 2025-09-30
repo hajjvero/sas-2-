@@ -2,6 +2,7 @@
 #include "string.h"
 #include "menu.h"
 #include "../util/display.h"
+#include "input.h"
 
 void menuTitle(char *name)
 {
@@ -21,11 +22,12 @@ void menuTitle(char *name)
     printLine("=", DISPLAY_WIDTH, COLOR_CYAN);
 }
 
-void menuSubTitle(char *title) {
+void menuSubTitle(char *title)
+{
     printf("\n");
     int padding = (DISPLAY_WIDTH - strlen(title)) / 2;
 
-     // center Tetx
+    // center Tetx
     for (int i = 0; i < padding; i++)
         printf(" ");
 
@@ -53,7 +55,7 @@ void showMainMenu()
     printf("\n\n");
 }
 
-void handleMainChoice(int choice)
+void handleMenuChoice(int choice, ProducNode **listProducts)
 {
     switch (choice)
     {
@@ -66,17 +68,30 @@ void handleMainChoice(int choice)
 
         break;
     case 3:
+        // sectionof product
         menuSubTitle("Consultation des produits");
-        
+
+        // handle choice of operation of product
+        int productChoice;
+        do
+        {
+            showProducMenu();
+
+            // handle input choice
+            inputInteger("Entrez votre choix", &productChoice);
+
+            handleMenuProductChoice(productChoice, &(*listProducts));
+        } while (productChoice != 0);
+
         break;
     case 4:
-        menuSubTitle("Effectuer un achat"); 
+        menuSubTitle("Effectuer un achat");
 
         break;
     case 5:
         menuSubTitle("Mes statistiques");
 
-        break;       
+        break;
     case 0:
         displayClear();
         displayByColor("Merci d'utiliser notre application!\n", COLOR_BLUE);
