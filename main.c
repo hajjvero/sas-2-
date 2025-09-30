@@ -11,22 +11,50 @@ int main()
     // Fill products manually and add to linked list
     for (int i = 0; i < 10; i++)
     {
-        Product p;    // temp product
-        sprintf(p.nom, "Product %d", i + 1);
+        Product p; // temp product
 
-        // Assign categories
-        if (i < 3) 
+        // Assign names and categories
+        if (i < 3)
+        {
             strcpy(p.categorie, "Electronics");
+            if (i == 0)
+                strcpy(p.nom, "Smartphone");
+            else if (i == 1)
+                strcpy(p.nom, "Laptop");
+            else
+                strcpy(p.nom, "Headphones");
+        }
         else if (i < 6)
+        {
             strcpy(p.categorie, "Clothing");
+            if (i == 3)
+                strcpy(p.nom, "T-Shirt");
+            else if (i == 4)
+                strcpy(p.nom, "Jeans");
+            else
+                strcpy(p.nom, "Jacket");
+        }
         else if (i < 8)
+        {
             strcpy(p.categorie, "Books");
+            if (i == 6)
+                strcpy(p.nom, "C Programming Guide");
+            else
+                strcpy(p.nom, "Data Structures Handbook");
+        }
         else
+        {
             strcpy(p.categorie, "Furniture");
+            if (i == 8)
+                strcpy(p.nom, "Office Chair");
+            else
+                strcpy(p.nom, "Wooden Desk");
+        }
 
         p.prix = 50.0f + (i * 10); // just example prices
         p.stock = 5 + i;           // example stock
-        sprintf(p.description, "This is the description for product %d", i + 1);
+
+        sprintf(p.description, "This is the description for %s", p.nom);
 
         // Same date for simplicity
         p.date.jour = 30;

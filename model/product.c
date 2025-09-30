@@ -5,6 +5,7 @@
 #include "input.h"
 #include "stdlib.h"
 #include "../menu/menu.h"
+#include "../util/helper.h"
 
 // Function to display list
 void allProducts(ProducNode *head)
@@ -85,7 +86,7 @@ ProducNode *findProduc(ProducNode *head, int id)
 {
     // srt to head of list
     ProducNode *temp = head;
-    while (temp->next != NULL) // go to find from start to end
+    while (temp != NULL) // go to find from start to end
     {
         if (temp->data.id == id)
         {
@@ -103,7 +104,7 @@ ProducNode *findProducByNom(ProducNode *head, char *nom)
 {
     // srt to head of list
     ProducNode *temp = head;
-    while (temp->next != NULL) // go to find from start to end
+    while (temp != NULL) // go to find from start to end
     {
         //  compar without uupper o lower case
         if (strcasecmp(temp->data.nom, nom) == 0)
@@ -122,7 +123,7 @@ ProducNode *findProducByCategorie(ProducNode *head, char *categorie)
 {
     // srt to head of list
     ProducNode *temp = head;
-    while (temp->next != NULL) // go to find from start to end
+    while (temp != NULL) // go to find from start to end
     {
         //  compar without uupper o lower case
         if (strcasecmp(temp->data.categorie, categorie) == 0)
@@ -158,16 +159,16 @@ void sortByPrix(ProducNode *head)
     do
     {
         displayByColor("[0]\tCroissant\n", COLOR_YELLOW);   // asc
-        displayByColor("[1]\tDécroissant\n", COLOR_YELLOW); // desc
+        displayByColor("[1]\tDecroissant\n", COLOR_YELLOW); // desc
 
         // input int
         inputInteger("Entrer order", &choice);
 
-        if (choice != 0 || choice != 1)
+        if (choice != 0 && choice != 1)
         {
             displayByColor("\nChoix invalide!\n", COLOR_RED);
         }
-    } while (choice != 0 || choice != 1); // select invalid choice.
+    } while (choice != 0 && choice != 1); // select invalid choice.
 
     // empty list
     if (head == NULL)
@@ -215,16 +216,16 @@ void sortByNom(ProducNode *head)
     do
     {
         displayByColor("[0]\tCroissant\n", COLOR_YELLOW);   // asc
-        displayByColor("[1]\tDécroissant\n", COLOR_YELLOW); // desc
+        displayByColor("[1]\tDecroissant\n", COLOR_YELLOW); // desc
 
         // input int
         inputInteger("Entrer order", &choice);
 
-        if (choice != 0 || choice != 1)
+        if (choice != 0 && choice != 1)
         {
             displayByColor("\nChoix invalide!\n", COLOR_RED);
         }
-    } while (choice != 0 || choice != 1); // select invalid choice.
+    } while (choice != 0 && choice != 1); // select invalid choice.
 
     // empty list
     if (head == NULL)
@@ -266,7 +267,78 @@ void sortByNom(ProducNode *head)
 // Function to display form of search.
 void searchProduct(ProducNode *head)
 {
+    // select property to search
+    int searchPropertyChoice;
+    do
+    {
+        displayByColor(" [0]\tRecherche par nom\n", COLOR_GREEN);
+        displayByColor(" [1]\tRecherche par categorie\n", COLOR_GREEN);
 
+        inputInteger("Entre choix", &searchPropertyChoice);
+
+        switch (searchPropertyChoice)
+        {
+        case 0:
+        {
+            // By nom
+            char text[100];
+            inputText("Entrez le nom a rechercher", text);
+
+            ProducNode *temp = head;   // set to start list
+            while (temp != NULL) // go to end list
+            {
+                // check if the name of current node is contains the text.
+                // use intelegent search : convert to lower case and check if contains text.
+                char lowerNom[100];
+                char lowerText[100];
+
+                stringToLowerCase(temp->data.nom, lowerNom); // nom to lower
+                stringToLowerCase(text, lowerText); // convert user text to lower
+
+                if (strstr(lowerNom, lowerText) != NULL)
+                {
+                    // displat all products contans thsi text
+                    infoProduct(&temp->data);
+                }
+                
+                temp = temp->next;
+            }
+            break;
+        }
+        case 1:
+        {
+            // By categorie
+            char text[100];
+            inputText("Entrez le categorie a rechercher", text);
+
+            ProducNode *temp = head;   // set to start list
+            while (temp != NULL) // go to end list
+            {
+                // check if the name of current node is contains the text.
+                // use intelegent search : convert to lower case and check if contains text.
+                char lowerCat[100];
+                char lowerText[100];
+
+                stringToLowerCase(temp->data.categorie, lowerCat); // nom to lower
+                stringToLowerCase(text, lowerText); // convert user text to lower
+
+                if (strstr(lowerCat, lowerText) != NULL)
+                {
+                    // displat all products contans thsi text
+                    infoProduct(&temp->data);
+                }
+                temp = temp->next;
+            }
+            break;
+        }
+        }
+
+        if (searchPropertyChoice != 0 && searchPropertyChoice != 1)
+        {
+            displayByColor("\nChoix invalide!\n", COLOR_RED);
+        }
+
+    } while (searchPropertyChoice != 0 && searchPropertyChoice != 1);
 }
 
 // Function to menu of product
@@ -279,7 +351,8 @@ void showProducMenu()
     printf("\n\n");
 }
 
-void handleMenuProductChoice(int choice, ProducNode **head) {
+void handleMenuProductChoice(int choice, ProducNode **head)
+{
     switch (choice)
     {
     case 1:
@@ -292,11 +365,42 @@ void handleMenuProductChoice(int choice, ProducNode **head) {
         break;
     case 3:
         menuSubTitle("Tri des produits");
-        // sort
+
+        // select property to sort
+        int sortPropertyChoice;
+        do
+        {
+            displayByColor(" [0]\tTri par prix\n", COLOR_GREEN);
+            displayByColor(" [1]\ttri par nom\n", COLOR_GREEN);
+
+            inputInteger("Entre choix", &sortPropertyChoice);
+
+            switch (sortPropertyChoice)
+            {
+            case 0:
+                // By prix
+                sortByPrix(*head);
+                break;
+            case 1:
+                // By Nom
+                sortByNom(*head);
+                break;
+            default:
+                displayByColor("\nChoix invalide!\n", COLOR_RED);
+                break;
+            }
+
+            if (sortPropertyChoice != 0 && sortPropertyChoice != 1)
+            {
+                displayByColor("\nChoix invalide!\n", COLOR_RED);
+            }
+
+        } while (sortPropertyChoice != 0 && sortPropertyChoice != 1);
+
         break;
     case 0:
-        displayByColor("Quitter",COLOR_RED);
-        break;    
+        displayByColor("Quitter", COLOR_RED);
+        break;
     default:
         displayByColor("\nChoix invalide!\n", COLOR_RED);
     }
