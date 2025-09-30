@@ -16,7 +16,7 @@ typedef struct
     char nom[80]; // String
     char prenom[80]; // String
     char email[80]; // String concatenation between nom and prenom by format nom.prenom@email.com
-    float solde = 5000; // solde of cleint by default 5000 DH
+    float solde; // solde of cleint by default 5000 DH
 } Cleint;
 
 // Model of Product
@@ -30,7 +30,6 @@ typedef struct
     char description[100]; // String
     Date date; // Date created
 } Product;
-
 
 // Linked list node for Prpduct
 typedef struct ProducNode {
