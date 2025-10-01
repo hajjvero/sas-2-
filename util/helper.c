@@ -10,4 +10,5 @@ void stringToLowerCase(char *string, char *dest)
     {
         dest[i] = tolower(string[i]);
     }
+    dest[i] = '\0'; // end string.
 }
