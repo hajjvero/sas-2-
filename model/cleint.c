@@ -8,6 +8,7 @@
 // Function to menu of cleint
 void showCleintMenu(Cleint *cleint)
 {
+    printf("\n");
     if (cleint == NULL)
     {
         displayByColor(" [1]\tCreation de profil\n", COLOR_GREEN);
@@ -38,7 +39,6 @@ void cleintMenuSubTitle(char *title)
     printLine("=", DISPLAY_WIDTH, COLOR_CYAN);
 }
 
-
 // Function to handle menu cleint
 void handleMenuCleintChoice(int choice, Cleint **cleint)
 {
@@ -58,14 +58,14 @@ void handleMenuCleintChoice(int choice, Cleint **cleint)
             inputText("Saisie prenom", (*cleint)->prenom);
 
             // generate email from nom and prenom
-            sprintf((*cleint)->email,"%s.%s@email.com", (*cleint)->nom, (*cleint)->prenom);
+            sprintf((*cleint)->email, "%s.%s@email.com", (*cleint)->nom, (*cleint)->prenom);
 
             // default value of solde
             (*cleint)->solde = 5000;
 
             (*cleint)->id = 1;
 
-             displayByColor("Ajouter avec succes.\n", COLOR_GREEN);
+            displayByColor("Ajouter avec succes.\n", COLOR_GREEN);
         }
         else
         {
@@ -74,7 +74,44 @@ void handleMenuCleintChoice(int choice, Cleint **cleint)
 
             infoCleint(*cleint);
 
-            // TODO: edit 
+            // TODO: edit
+
+            int propertyCleintChoice;
+            do
+            {
+                displayByColor(" [1]\tNom\n", COLOR_GREEN);
+                displayByColor(" [2]\tPrenom\n", COLOR_GREEN);
+                displayByColor(" [0]\tQuitter\n", COLOR_RED);
+
+                inputInteger("Entre le propriete de modifier", &propertyCleintChoice);
+
+                switch (propertyCleintChoice)
+                {
+                case 1:
+                    // Nom
+                    inputText("Saisie nom", (*cleint)->nom);
+
+                    displayByColor("Modifier nom avec succes.\n", COLOR_GREEN);
+                    break;
+                case 2:
+                    // Prenom
+                    inputText("Saisie prenom", (*cleint)->prenom);
+                    displayByColor("Modifier prenom avec succes.\n", COLOR_GREEN);
+                    break;
+                case 0:
+                    displayByColor("Quitter\n", COLOR_RED);
+                    break;
+                default:
+                    displayByColor("\nChoix invalide!\n", COLOR_RED);
+                    break;
+                }
+                /* code */
+            } while (propertyCleintChoice != 0);
+
+            // new generate email from nom and prenom
+            sprintf((*cleint)->email, "%s.%s@email.com", (*cleint)->nom, (*cleint)->prenom);
+
+            displayByColor("Modifier profil avec succes.\n", COLOR_GREEN);
         }
         break;
     case 2:
@@ -91,8 +128,10 @@ void handleMenuCleintChoice(int choice, Cleint **cleint)
 }
 
 // Function to display information of cleint
-void infoCleint(Cleint *cleint) {
-    if (cleint == NULL) {
+void infoCleint(Cleint *cleint)
+{
+    if (cleint == NULL)
+    {
         displayByColor("Aucun profile a afficher.\n", COLOR_RED);
         return;
     }

@@ -399,7 +399,7 @@ void handleMenuProductChoice(int choice, ProducNode **head)
 
         break;
     case 0:
-        displayByColor("Quitter", COLOR_RED);
+        displayByColor("Quitter\n", COLOR_RED);
         break;
     default:
         displayByColor("\nChoix invalide!\n", COLOR_RED);
