@@ -209,7 +209,8 @@ void handleMenuChoice(int choice, ProducNode **listProducts, Cleint **cleint)
         break;
     case 5:
         menuSubTitle("Mes statistiques");
-        int countProduct = 0, totalPrice = 0, totalQuantity = 0;
+        int countProduct = 0, totalQuantity = 0;
+        float totalPrice = 0;
         // display list of products acheter.
         ProducNode *temp = *listProducts;
         while (temp != NULL)
@@ -231,7 +232,7 @@ void handleMenuChoice(int choice, ProducNode **listProducts, Cleint **cleint)
             printf("%d\n", countProduct);
 
             displayByColor("Total : ", COLOR_CYAN);
-            printf("%d\n", totalPrice);
+            printf("%.2f DH\n", totalPrice);
 
             displayByColor("Total les quantites : ", COLOR_CYAN);
             printf("%d\n", totalQuantity);
