@@ -55,13 +55,24 @@ void showMainMenu()
     printf("\n\n");
 }
 
-void handleMenuChoice(int choice, ProducNode **listProducts)
+void handleMenuChoice(int choice, ProducNode **listProducts, Cleint** cleint)
 {
     switch (choice)
     {
     case 1:
         menuSubTitle("Gestion du profil client");
 
+        // handle choice of operation of cleint
+        int cleintChoice;
+        do
+        {
+            showCleintMenu(*cleint);
+
+            // handle input choice
+            inputInteger("Entrez votre choix", &cleintChoice);
+
+            handleMenuCleintChoice(cleintChoice, &(*cleint));
+        } while (cleintChoice != 0);
         break;
     case 2:
         menuSubTitle("Gestion du solde virtuel");

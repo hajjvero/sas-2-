@@ -7,6 +7,7 @@ int main()
 {
     // list of products
     ProducNode *producList = NULL;
+    Cleint *cleint = NULL;
 
     // Fill products manually and add to linked list
     for (int i = 0; i < 10; i++)
@@ -73,7 +74,7 @@ int main()
         displayByColor("Entrez votre choix: ", COLOR_MAGENTA);
         scanf("%d", &choice);
 
-        handleMenuChoice(choice, &producList);
+        handleMenuChoice(choice, &producList, &cleint);
     } while (choice != 0);
 
     return 0;

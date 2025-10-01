@@ -1,6 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 #include "../model/product.h"
+#include "../model/cleint.h"
 
 // Function to display title of application
 void menuTitle(char* name);
@@ -12,6 +13,6 @@ void showMainMenu();
 void menuSubTitle(char *title);
 
 // Function to tretment choice of user.
-void handleMenuChoice(int choice, ProducNode **listProducts);
+void handleMenuChoice(int choice, ProducNode **listProducts, Cleint** cleint);
 
 #endif
