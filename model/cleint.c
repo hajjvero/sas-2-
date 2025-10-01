@@ -5,6 +5,24 @@
 #include "string.h"
 #include "../util/input.h"
 
+// Local ffunction to displau sub title of cleint section
+void cleintMenuSubTitle(char *title)
+{
+    printf("\n");
+    int padding = (DISPLAY_WIDTH - strlen(title)) / 2;
+
+    // center Tetx
+    for (int i = 0; i < padding; i++)
+        printf(" ");
+
+    displayByColor(title, COLOR_YELLOW);
+    printf("\n");
+
+    // border bottom
+    printLine("=", DISPLAY_WIDTH, COLOR_CYAN);
+}
+
+
 // Function to menu of cleint
 void showCleintMenu(Cleint *cleint)
 {
@@ -23,20 +41,12 @@ void showCleintMenu(Cleint *cleint)
     printf("\n\n");
 }
 
-void cleintMenuSubTitle(char *title)
-{
+void showCleintMenuOfSolde() {
     printf("\n");
-    int padding = (DISPLAY_WIDTH - strlen(title)) / 2;
-
-    // center Tetx
-    for (int i = 0; i < padding; i++)
-        printf(" ");
-
-    displayByColor(title, COLOR_YELLOW);
-    printf("\n");
-
-    // border bottom
-    printLine("=", DISPLAY_WIDTH, COLOR_CYAN);
+    displayByColor(" [1]\tAffichage du montant disponible\n", COLOR_GREEN);
+    displayByColor(" [2]\tDepot d'argent\n", COLOR_GREEN);
+    displayByColor(" [0]\tQuitter\n", COLOR_RED);
+    printf("\n\n");
 }
 
 // Function to handle menu cleint
@@ -74,8 +84,7 @@ void handleMenuCleintChoice(int choice, Cleint **cleint)
 
             infoCleint(*cleint);
 
-            // TODO: edit
-
+            // choice of props nom ou prenom
             int propertyCleintChoice;
             do
             {

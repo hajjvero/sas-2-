@@ -61,6 +61,7 @@ int main()
         p.date.jour = 30;
         p.date.mois = 9;
         p.date.annee = 2025;
+        p.quantityConsumed = 0; // default not consumed
 
         // Add to linked list
         addProduc(&producList, p);

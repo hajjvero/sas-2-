@@ -45,6 +45,20 @@ int inputDouble(const char* label, double* value) {
     return 1;
 }
 
+int inputFloat(const char* label, float* value) {
+    printf("%s : ", label);
+
+     if (scanf("%f",  value) != 1)
+    {
+        displayByColor("Error: Invalid double input!\n", COLOR_RED);
+
+        return 0;
+    }
+
+     // success input
+    return 1;
+}
+
 int inputChar(const char* label, char* value) {
     printf("%s : ", label);
 

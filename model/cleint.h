@@ -5,6 +5,9 @@
 // Function to menu of cleint
 void showCleintMenu(Cleint *cleint);
 
+// Function to display menu of (Gestion du solde virtuel)
+void showCleintMenuOfSolde();
+
 // Function to handle menu cleint
 void handleMenuCleintChoice(int choice, Cleint **cleint);
 

@@ -29,6 +29,7 @@ typedef struct
     int stock; // Quantity disponible
     char description[100]; // String
     Date date; // Date created
+    int quantityConsumed; // Int hadi zdtha bach fach ychro chi produit nacrementiha bdak chi li chra o haka ghadi n3raf les produit le chra fa les historique. (default 0)
 } Product;
 
 // Linked list node for Prpduct

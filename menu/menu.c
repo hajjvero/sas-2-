@@ -55,7 +55,7 @@ void showMainMenu()
     printf("\n\n");
 }
 
-void handleMenuChoice(int choice, ProducNode **listProducts, Cleint** cleint)
+void handleMenuChoice(int choice, ProducNode **listProducts, Cleint **cleint)
 {
     switch (choice)
     {
@@ -75,9 +75,53 @@ void handleMenuChoice(int choice, ProducNode **listProducts, Cleint** cleint)
         } while (cleintChoice != 0);
         break;
     case 2:
+    {
         menuSubTitle("Gestion du solde virtuel");
+        if ((*cleint) == NULL)
+        {
+            displayByColor("Pas de profil, ajoutez un profil s'il vous plait.\n", COLOR_RED);
+        }
+        else
+        {
+            int operationSoldChoice;
+            do
+            {
+                showCleintMenuOfSolde();
 
+                inputInteger("Entrez votre choix", &operationSoldChoice);
+
+                switch (operationSoldChoice)
+                {
+                case 1:
+                    menuSubTitle("Affichage du montant disponible");
+
+                    // display Solde
+                    displayByColor("Le montant disponible est : ", COLOR_CYAN);
+                    printf("%.2f DH\n", (*cleint)->solde); // 2 decimal
+
+                    break;
+                case 2:
+                    menuSubTitle("Depot d'argen");
+
+                    float depot;
+                    // add to solde
+                    if (inputFloat("Saisie le montant de depot", &depot) == 1) // valide nomber
+                    {
+                        (*cleint)->solde += depot;
+
+                        displayByColor("Alimentation du solde virtuel avec succes\n", COLOR_GREEN);
+                    }
+                    break;
+                case 0:
+                    displayByColor("Quitter\n", COLOR_RED);
+                    break;
+                default:
+                    displayByColor("\nChoix invalide!\n", COLOR_RED);
+                }
+            } while (operationSoldChoice != 0);
+        }
         break;
+    }
     case 3:
         // sectionof product
         menuSubTitle("Consultation des produits");
@@ -96,12 +140,104 @@ void handleMenuChoice(int choice, ProducNode **listProducts, Cleint** cleint)
 
         break;
     case 4:
-        menuSubTitle("Effectuer un achat");
+        menuSubTitle("Effectuer un acheter");
 
+        if ((*cleint) == NULL)
+        {
+            displayByColor("Pas de profil, ajoutez un profil s'il vous plait.\n", COLOR_RED);
+        }
+        else
+        {
+            int id;
+            // selecte product by id
+            inputInteger("Saisie Id de produit pour acheter", &id);
+
+            ProducNode *producNode = findProduc(*listProducts, id);
+
+            // not foun product.
+            if (producNode == NULL)
+            {
+                displayByColor("Acune produit founder.\n", COLOR_RED);
+            }
+            else
+            {
+                infoProduct(&producNode->data); // display info of product
+                int quantity;
+                inputInteger("Saisie quantite de produit pour acheter", &quantity);
+
+                // check stock
+                if (quantity > producNode->data.stock)
+                {
+                    displayByColor("Stock non disponible.\n", COLOR_RED);
+                    printf("Le stock disponible est : %d\n", producNode->data.stock);
+                }
+                else
+                {
+                    // check sold
+                    if ((*cleint)->solde < (quantity * producNode->data.prix))
+                    {
+                        displayByColor("Solde insuffisant.\n", COLOR_RED);
+                    }
+                    else
+                    {
+                        // cofirmation from user
+                        int userConfirm;
+
+                        displayByColor(" [1]\tValider achat\n", COLOR_GREEN);
+                        displayByColor(" [0]\tAnuller\n", COLOR_RED);
+
+                        inputInteger("Confirmer l'achat s'il vous plait", &userConfirm);
+
+                        if (userConfirm == 1)
+                        {
+                            // decrement quantity and sold
+                            (*cleint)->solde -= quantity * producNode->data.prix;
+
+                            producNode->data.stock -= quantity;
+                            producNode->data.quantityConsumed += quantity;
+
+                            displayByColor("\nTransaction d'achat reussie.\n", COLOR_GREEN);
+                        }
+                        else
+                        {
+                            displayByColor("\nAnuller l'achat.\n", COLOR_YELLOW);
+                        }
+                    }
+                }
+            }
+        }
         break;
     case 5:
         menuSubTitle("Mes statistiques");
+        int countProduct = 0, totalPrice = 0, totalQuantity = 0;
+        // display list of products acheter.
+        ProducNode *temp = *listProducts;
+        while (temp != NULL)
+        {
+            if (temp->data.quantityConsumed > 0) // product solder
+            {
+                printf("%d - %s - Quantite : %d\n", ++countProduct, temp->data.nom, temp->data.quantityConsumed);
+                totalPrice += temp->data.quantityConsumed * temp->data.prix;
+                totalQuantity += temp->data.quantityConsumed;
+            }
 
+            temp = temp->next;
+        }
+
+        if (countProduct > 0)
+        {
+            printLine("=", DISPLAY_WIDTH / 2, COLOR_BLUE);
+            displayByColor("Nomber des produit : ", COLOR_CYAN);
+            printf("%d\n", countProduct);
+
+            displayByColor("Total : ", COLOR_CYAN);
+            printf("%d\n", totalPrice);
+
+            displayByColor("Total les quantites : ", COLOR_CYAN);
+            printf("%d\n", totalQuantity);
+        } else {
+            displayByColor("\nAucun produits acheter.\n", COLOR_YELLOW);
+        }
         break;
     case 0:
         displayClear();
